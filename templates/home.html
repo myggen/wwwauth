@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+		<head>
+			<title>{{.Title}}</title>
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		</head>
+		<body>
+		<div style='min-height: 98vh; display: flex; flex-direction: column;'>
+			<h1> {{.H1}} </h1>
+			
+			<div style='display: flex; justify-content: flex-end;'>Logged in as &nbsp; <strong>{{.User.UserName}}</strong>&nbsp; <a href="/{{.AppRoot}}/logout">logout</a></div>
+			<br>
+			Content
+			<footer style='display: flex;
+			align-items: flex-end;
+			flex: 1 1 auto;'>
+			version %s %s
+			</footer>
+		</div>
+
+		</body>
+		</html>

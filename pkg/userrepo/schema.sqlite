@@ -1,0 +1,38 @@
+CREATE TABLE users (
+	id integer primary key autoincrement,
+	user_uuid TEXT UNIQUE,
+	username TEXT UNIQUE,
+	email TEXT UNIQUE,
+	active INTEGER,
+	status TEXT,
+	passwd TEXT,
+	first_name TEXT,
+	last_name TEXT,
+	role TEXT,
+	created_date datetime default (datetime(current_timestamp))
+	);
+
+CREATE TABLE email_confirmations (
+	id integer primary key autoincrement,
+	created_date datetime default (datetime(current_timestamp)),
+	token TEXT UNIQUE,
+	email TEXT NOT NULL,
+	expiry_time DATETIME NOT NULL,
+	confirmed BOOL NOT NULL);
+
+
+CREATE TABLE sessions (
+	id integer primary key autoincrement,
+	token TEXT UNIQUE,
+	user_uuid TEXT NOT NULL,
+	created_date datetime default (datetime(current_timestamp)),
+	expiry_time TIMESTAMP NOT NULL);
+
+
+CREATE TABLE password_reset_request (
+	id integer primary key autoincrement,
+	created_date datetime default (datetime(current_timestamp)),
+	token TEXT UNIQUE,
+	email TEXT NOT NULL,
+	expiry_time DATETIME NOT NULL,
+	confirmed BOOL NOT NULL);
