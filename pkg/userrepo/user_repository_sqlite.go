@@ -59,6 +59,10 @@ func (r *UserRepositorySqlite) CreateSession(userUUID string) (Session, error) {
 }
 
 func NewUserRepositorySqlite(dbPath string) (*UserRepositorySqlite, error) {
+	if dbPath == "" {
+		return nil, fmt.Errorf("NewUserRepositorySqlite error param dbPath is blank ")
+	}
+
 	db, err := sql.Open("sqlite3", dbPath)
 	if err != nil {
 		return nil, fmt.Errorf("error opening database %s: %v", dbPath, err)

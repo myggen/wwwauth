@@ -33,6 +33,7 @@ type PageInfo struct {
 
 // Set by calling code
 var Templates map[string]*template.Template
+
 var DbFile string
 
 // TODO Use this
