@@ -162,13 +162,6 @@ func ChangePasswordHandler(w http.ResponseWriter, r *http.Request, title string)
 			log.Printf("template %s not found", "change_password.html")
 			return
 		}
-		/*
-			err = repo.DeletePasswordResetRequest(token)
-			if err != nil {
-				log.Printf("ForgotPasswordHandler: DeletePasswordResetRequest(token):  %v", err)
-				return
-			}
-		*/
 
 		message := fmt.Sprintf(`Ok password updated <a href="/%s"> Log in</a>`, AppRoot)
 		pi.InfoHtml = template.HTML(message)
