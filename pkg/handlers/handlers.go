@@ -199,17 +199,19 @@ func ForgotPasswordHandler(w http.ResponseWriter, r *http.Request, title string)
 		r.ParseForm()
 		email := r.Form["email"][0]
 		if !strings.Contains(email, "@") {
-			pi.Errors = append(pi.Errors, fmt.Sprintf("%s is not a valid email address", email))
+			pi.Errors = append(pi.Errors, fmt.Sprintf("ForgotPassword  %s is not a valid email address", email))
 			t.Execute(w, pi)
 			return
 		}
 
 		req, err := repo.CreatePasswordResetRequest(email, time.Now().UTC().Add(+96*time.Hour))
-		if !strings.Contains(email, "@") {
-			pi.Errors = append(pi.Errors, fmt.Sprintf("Oops!. CreatePasswordResetReqest: %s", err))
+		if err != nil {
+			log.Printf("Error ForgotPasswordHandler repo.CreatePasswordResetRequest: %v", err)
+			pi.Errors = append(pi.Errors, "Oops . CreatePasswordResetRequest failed. Please try later")
 			t.Execute(w, pi)
 			return
 		}
+
 		fmt.Printf("Proto: %s, Req: %s %s\n", r.Proto, r.Host, r.URL.Path)
 		proto := "https"
 		if strings.Contains(r.Host, "localhost") {
@@ -231,7 +233,7 @@ func ForgotPasswordHandler(w http.ResponseWriter, r *http.Request, title string)
 		`, proto, r.Host, AppRoot, req.Token)
 
 		message := mails.Message{
-			//From:    "any@anyany.xyz",
+			//From:    "zappa@anyany.xyz",
 			To:      []string{email},
 			Subject: "Password reset confirmation",
 			Body:    msg,
