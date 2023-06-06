@@ -344,26 +344,35 @@ func ConfirmHandler(w http.ResponseWriter, r *http.Request, title string) {
 		}
 
 		token := r.URL.Query().Get("token")
+
+		if token == "" {
+			pi.Info = append(pi.Errors, "Oops . An error ocurred. Please try later")
+			log.Printf("Error confirmHandler: token param empty \n")
+			t.Execute(w, pi)
+			return
+		}
+
 		repo, err := userrepo.NewUserRepositorySqlite(DbFile)
 		if err != nil {
-			pi.Info = append(pi.Errors, "Oops . An error ocurred. Please try later")
+			pi.Info = append(pi.Errors, "Oops . An error ocurred during ConfirmEmail. Please try later")
+			log.Printf("Error confirmHandler: %v\n", err)
+			t.Execute(w, pi)
+			return
 		}
 		err = repo.ConfirmEmail(token)
 		if err != nil {
 			log.Printf("Error confirmHandler: %v\n", err)
-			if err != nil {
-				pi.Info = append(pi.Errors, "Oops . An error ocurred during ConfirmEmail. Please try later")
-				log.Printf("Error confirmHandler: %v\n", err)
-				t.Execute(w, pi)
-				return
-			}
-
+			pi.Info = append(pi.Errors, "Oops . An error ocurred during ConfirmEmail. Please try later")
+			t.Execute(w, pi)
+			return
 		}
 
-		log.Printf("Confirming . ")
+		log.Printf("Confirming Account")
 		t, ok = Templates["confirmed_response.html"]
 		if !ok {
 			log.Printf("template %s not found", "confirmed_response.html")
+			pi.Info = append(pi.Errors, "Oops . An error ocurred during ConfirmEmail. Please try later")
+			t.Execute(w, pi)
 			return
 		}
 		t.Execute(w, pi)
