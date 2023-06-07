@@ -72,7 +72,7 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request, title string) {
 
 	err = repo.DeleteSession(c.Value)
 	if err != nil {
-		log.Printf("repo.DeleteSession: %v", err)
+		log.Printf("repo.DeleteSession failed on db %s: %v", DbFile, err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
