@@ -126,7 +126,7 @@ func (repo *UserRepositorySqlite) GetByUUID(userUUID string) (User, error) {
 
 func (repo *UserRepositorySqlite) GetByEmail(email string) (User, error) {
 	row := repo.db.QueryRow(
-		"SELECT user_uuid, username, email, active, status, passwd, first_name, last_name, role FROM users WHERE email = ?",
+		"SELECT user_uuid, username, email, active, status, passwd, first_name, last_name, role FROM users WHERE email = ? COLLATE NOCASE",
 		email,
 	)
 	user := User{}
@@ -153,7 +153,7 @@ func rowscan(row *sql.Row, user *User) error {
 }
 func (repo *UserRepositorySqlite) GetByUserName(userName string) (User, error) {
 	row := repo.db.QueryRow(
-		"SELECT user_uuid, username, email, active, status, passwd, first_name, last_name, role FROM users WHERE username = ?",
+		"SELECT user_uuid, username, email, active, status, passwd, first_name, last_name, role FROM users WHERE username = ? COLLATE NOCASE",
 		userName,
 	)
 	user := User{}
