@@ -29,6 +29,7 @@ type PageInfo struct {
 
 	BuildTime string
 	Version   string
+	Any       []any
 }
 
 // Set by calling code
