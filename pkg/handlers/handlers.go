@@ -426,8 +426,20 @@ func LoadTemplates() error {
 		if tmpl.IsDir() {
 			continue
 		}
-
-		pt, err := template.ParseFS(Files, TemplatesDir+"/"+tmpl.Name())
+		funcMap := template.FuncMap{
+			"loop": func(from, to int) <-chan int {
+				ch := make(chan int)
+				go func() {
+					for i := from; i <= to; i++ {
+						ch <- i
+					}
+					close(ch)
+				}()
+				return ch
+			},
+		}
+		pt, err := template.New(tmpl.Name()).Funcs(funcMap).ParseFS(Files, TemplatesDir+"/"+tmpl.Name())
+		//pt, err := template.ParseFS(Files, TemplatesDir+"/"+tmpl.Name())
 		if err != nil {
 			return err
 		}
