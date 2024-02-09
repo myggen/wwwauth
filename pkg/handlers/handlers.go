@@ -325,7 +325,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request, title string) {
 			Path:    "/",
 		})
 		log.Printf("LoginHandler redirect home")
-		http.Redirect(w, r, "/"+AppRoot+"/home", http.StatusMovedPermanently)
+		http.Redirect(w, r, "/"+AppRoot , http.StatusMovedPermanently)
 	} // Else method not supported
 }
 func ConfirmHandler(w http.ResponseWriter, r *http.Request, title string) {
